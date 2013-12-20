@@ -1,4 +1,16 @@
 #-*- coding: utf-8-*-#
+"""Copyright (c) 2013 chloe>                          
+All Rights Reserved.                                                      
+                                                                         
+Filename:    clothAndHair.chMain                                    
+Description:    maya布料与毛发的解算以及缓存管理
+                                                                                  
+Current Version:     0.1        
+Latest Date:    2013.12.20                                   
+Author:      chloe                                                                         
+Email:      guaiyunyun@gmail.com 
+"""
+
 import maya.cmds as cmds
 
 import mainWindow
