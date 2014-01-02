@@ -1,7 +1,11 @@
 #-*- coding: utf-8-*-#
+import os
+
 import maya.cmds as cmds
 
-noticeTextPath = "//192.168.1.5/Share/Scripts/mayaScripts/scripts/animation/clothAndHair/notice/nClothHairNotice.txt"  
+thisFilePath = os.path.realpath(__file__).replace("\\","/")
+thisFoldPath = thisFilePath.rsplit("/", 1)[0]
+noticeTextPath = thisFoldPath + "/notice/nClothHairNotice.txt"
 
 class NoticeInformation():
     """提示信息类
@@ -11,7 +15,7 @@ class NoticeInformation():
 
     Attributes:
         无
-    """    
+    """
     def __init__(self):
         pass
     

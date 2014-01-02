@@ -5,6 +5,7 @@ import maya.mel as mel
 import tools.commonTools
 import tools.clothAndHairTools
 import mainWindow
+
 cT = tools.commonTools.CommonTools()  #实例化CommanTools类
 clothHairT = tools.clothAndHairTools.ClothAndHairTools()  #实例化ClothAndHairTools类
 

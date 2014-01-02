@@ -2,6 +2,7 @@
 import os
 import re
 import shutil
+import xml.dom.minidom as minidom
 
 import maya.cmds as cmds
 import maya.mel as mel
@@ -12,7 +13,14 @@ import tools.clothAndHairTools
 cT = tools.commonTools.CommonTools()  #实例化CommanTools类
 clothHairT = tools.clothAndHairTools.ClothAndHairTools()  #实例化ClothAndHairTools类
 
-serverLetter = "Y:/"  #服务器盘符
+thisFilePath = os.path.realpath(__file__).replace("\\","/")
+thisFoldPath = thisFilePath.rsplit("/", 1)[0]
+confDir = thisFoldPath + "/notice/conf.xml"
+
+dom = minidom.parse(confDir)  #读取配置文件中的服务器盘符信息
+root = dom.documentElement
+serverLetterNode = root.getElementsByTagName("serverLetter")
+serverLetter = serverLetterNode[0].getAttribute("Letter")  #服务器盘符
 
 class CacheAllManagement():
     """缓存整体管理类
@@ -41,7 +49,7 @@ class CacheAllManagement():
         #通过缓存拿到与之相连的物体名    
         cacheNodesList = clothHairT.getCacheNodes()
         #cacheNodesList =[u'YL_Char_RG_Hi_1_YL_Char_SF_Hi2_hairBackTop_hairSystemShapeCache1', u'geoCache_YL_Char_RG_Hi_1__YL_Char_SF_Hi2_body_Geo___1', u'geoCache_YL_Char_RG_Hi_1__YL_Char_SF_Hi2_cloth_Geo___1']
-    
+
         result = True    
         for eachCacheNode in cacheNodesList:
             #eachCacheNode = "YL_Char_RG_Hi_1_YL_Char_SF_Hi2_hairBackTop_hairSystemShapeCache1"
@@ -67,7 +75,7 @@ class CacheAllManagement():
                     print objName  #拿到该缓存多连的物体名
                         
                     cacheFinalDir = getFinalCacheDir(objName[0], cacheFlag)  #根据物体名拿到缓存预存放路径
-                    ObjNameNew = getObjNameNew(objName[0])  
+                    ObjNameNew = getObjNameNew(objName[0])
                     eachCacheFileList = cmds.cacheFile(eachCacheNode, query = True, f = True )  #拿到缓存节点的文件信息，含mc与xml两个文件
                     
                     #将缓存文件存在该目录下（若目录不存在则创建）,并对其重命名

@@ -13,9 +13,11 @@ import mainWindow
 cT = tools.commonTools.CommonTools()  #实例化CommanTools类
 clothHairT = tools.clothAndHairTools.ClothAndHairTools()  #实例化ClothAndHairTools类
 
-mayaAppDir = os.environ["MAYA_APP_DIR"]
-userPath = mayaAppDir + "/2013-x64/presets/attrPresets/nCloth" 
-serverPath = "//192.168.1.5/Share/Scripts/mayaScripts/scripts/animation/clothAndHair/nClothPresets"
+userPresetDir = cmds.internalVar(userPresetsDir = True) + "nCloth"
+
+thisFilePath = os.path.realpath(__file__).replace("\\","/")
+thisFoldPath = thisFilePath.rsplit("/", 1)[0]
+serverPresetPath = thisFoldPath + "/nClothPresets"
 
 class ClothAndHairManagement():
     """毛发与布料管理类
@@ -100,7 +102,7 @@ class ClothAndHairManagement():
             无
         """
         fileList = []  
-        fileList = cT.getFileListFromAPath(serverPath, fileList)  #拿到自定义预设路径下的所有文件名列表
+        fileList = cT.getFileListFromAPath(serverPresetPath, fileList)  #拿到自定义预设路径下的所有文件名列表
         
         cPreName = cmds.textScrollList(mainWindow.cPreScrollList, query = True, selectItem=True) 
         if not cPreName:
@@ -119,9 +121,9 @@ class ClothAndHairManagement():
                 if YON == "No":
                     print "You Don't Want To Delete This Preset!"
                 else:
-                    fileForDelete = serverPath + "/" + str(cPreFileName)  #预删除文件的完整路径（服务器上）
+                    fileForDelete = serverPresetPath + "/" + str(cPreFileName)  #预删除文件的完整路径（服务器上）
                     os.remove(fileForDelete)  #删除文件
-                    fileForDeleteBak = userPath + "/" + str(cPreFileName)  #预删除文件的完整路径（本地）
+                    fileForDeleteBak = userPresetDir + "/" + str(cPreFileName)  #预删除文件的完整路径（本地）
                     os.remove(fileForDeleteBak)  #删除文件
                     
                     self.getPresetsFromChar()  #刷新特殊预设列表
@@ -151,7 +153,7 @@ class ClothAndHairManagement():
             preFileDir = getPre(mainWindow.cPreScrollList)  #拿到布料预设名
             
             if not preFileDir:  #如果预设返回为空（包括没有选择预设、选择了default预设、预设文件不存在），则创建默认布料
-                preFileDir = serverPath + "/default.mel" 
+                preFileDir = serverPresetPath + "/default.mel" 
             else:
                 preFileDir = preFileDir        
             
@@ -209,7 +211,7 @@ class ClothAndHairManagement():
             preFileDir = getPre(mainWindow.cPreScrollList)  #拿到布料预设名
             
             if not preFileDir:
-                preFileDir = serverPath + "/default.mel" 
+                preFileDir = serverPresetPath + "/default.mel" 
             else:
                 preFileDir = preFileDir
                 
@@ -270,7 +272,7 @@ def searchPresets(charNameTarget):
     cPresetsList = []  #存放所有角色预设名
         
     #调用函数拿到某路径下的所有文件名列表
-    pFileList = cT.getFileListFromAPath(serverPath, pFileList)
+    pFileList = cT.getFileListFromAPath(serverPresetPath, pFileList)
     
     if not pFileList:
         print "There Has No Presets!"
@@ -326,8 +328,8 @@ def saveInPreWindow(nClothShapeName,charNameTarget):
 
 def savePresetP(nClothShapeName, cPresetName):
     mel.eval('saveAttrPreset %s %s false'%(nClothShapeName,cPresetName))
-    oldPresetFile = userPath + "/" + cPresetName + ".mel"
-    newPresetFile = serverPath + "/" + cPresetName + ".mel"
+    oldPresetFile = userPresetDir + "/" + cPresetName + ".mel"
+    newPresetFile = serverPresetPath + "/" + cPresetName + ".mel"
     shutil.copyfile(oldPresetFile, newPresetFile)  #将本地保存的预设复制到服务器的指定目录下
     
 def getPre(cPreList):
@@ -347,7 +349,7 @@ def getPre(cPreList):
     cPreItem = cmds.textScrollList(cPreList, query = True, selectItem=True)
 
     pFileList = []    
-    pFileList = cT.getFileListFromAPath(serverPath, pFileList)  #调用函数拿到Maya自定义路径下的所有文件名列表
+    pFileList = cT.getFileListFromAPath(serverPresetPath, pFileList)  #调用函数拿到Maya自定义路径下的所有文件名列表
     
     #若特殊预设列表中有选中项
     if cPreItem:
@@ -357,7 +359,7 @@ def getPre(cPreList):
             cPreFileName = cPreItem[0] + ".mel"
             cPreFileDir = ""  #若预设文件没有找到，则相当于没有选择任何预设
             if cPreFileName in pFileList:
-                cPreFileDir = serverPath + "/" + cPreFileName
+                cPreFileDir = serverPresetPath + "/" + cPreFileName
             return cPreFileDir
     #若没有选择任何预设
     else:

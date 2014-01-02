@@ -44,7 +44,6 @@ def main():
     Returns:
         无
     """
-    
     mWin.createMainWindow()  #实现窗体初始化
     
     dynInf.getCharsName()  #实现角色名的初始显示
