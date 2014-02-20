@@ -404,7 +404,6 @@ def getHairCacheFromShape(hairShapeName):
     return hairCacheList
 
 
-#objName = "XT_chr_MD_ALL:armor_Geo"
 def getGeoCacheFromObj(objName):
     """根据物体名拿到该物体相连的缓存列表
 
@@ -421,7 +420,6 @@ def getGeoCacheFromObj(objName):
     cacheNodes = []
     if cacheNodesList:
         for eachCacheNode in cacheNodesList:
-            #eachCacheNode = "XT_chr_MD_ALL_skirt_GeoShapeCache1"
             isGeoCache = cmds.cacheFile(eachCacheNode, query=True, geometry=True)
             if isGeoCache:  #为geoCache,不是hairCache
                 shapeWithCache = cmds.cacheFile(eachCacheNode, query=True, geometry=True)

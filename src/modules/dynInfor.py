@@ -135,7 +135,7 @@ def searchCharsName():
     Returns:
         allCharsNameList：所有角色名列表(无重复)
     """
-    cmds.namespace(set = ":")  
+    cmds.namespace(set = ":")
     allNamespace = cmds.namespaceInfo(listOnlyNamespaces = True)  #拿到所有根目录下的命名空间名称
     allCharsName = []
     
@@ -145,7 +145,7 @@ def searchCharsName():
         if eachNamespace.find("_chr_") < 0:
             print "This Is Not A Char!"            
         else:
-            namesapceWithChar = eachNamespace  
+            namesapceWithChar = eachNamespace
             charName = namesapceWithChar.split("_")[2]  #charName存放角色名
             allCharsName.append(charName)
 
@@ -222,7 +222,7 @@ def searchTargetNodes(oneNucleusName):
     
     #检查listConnections的返回值是否为NoneType，若是，则将其转化为空列表
     if not nClothListTemp:
-        nClothListTemp = []        
+        nClothListTemp = []
     if not nRigidListTemp:
         nRigidListTemp = []
     if not hairListTemp:

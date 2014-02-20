@@ -16,7 +16,7 @@ clothHairT = tools.clothAndHairTools.ClothAndHairTools()  #实例化ClothAndHair
 userPresetDir = cmds.internalVar(userPresetsDir = True) + "nCloth"
 
 thisFilePath = os.path.realpath(__file__).replace("\\","/")
-thisFoldPath = thisFilePath.rsplit("/", 1)[0]
+thisFoldPath = thisFilePath.rsplit("/", 2)[0]
 serverPresetPath = thisFoldPath + "/nClothPresets"
 
 class ClothAndHairManagement():

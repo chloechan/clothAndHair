@@ -4,8 +4,8 @@ import os
 import maya.cmds as cmds
 
 thisFilePath = os.path.realpath(__file__).replace("\\","/")
-thisFoldPath = thisFilePath.rsplit("/", 1)[0]
-noticeTextPath = thisFoldPath + "/notice/nClothHairNotice.txt"
+thisFoldPath = thisFilePath.rsplit("/", 2)[0]
+noticeTextPath = thisFoldPath + "/readme.txt"
 
 class NoticeInformation():
     """提示信息类

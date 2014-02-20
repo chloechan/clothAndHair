@@ -14,8 +14,8 @@ cT = tools.commonTools.CommonTools()  #实例化CommanTools类
 clothHairT = tools.clothAndHairTools.ClothAndHairTools()  #实例化ClothAndHairTools类
 
 thisFilePath = os.path.realpath(__file__).replace("\\","/")
-thisFoldPath = thisFilePath.rsplit("/", 1)[0]
-confDir = thisFoldPath + "/notice/conf.xml"
+thisFoldPath = thisFilePath.rsplit("/", 2)[0]
+confDir = thisFoldPath + "/conf.xml"
 
 dom = minidom.parse(confDir)  #读取配置文件中的服务器盘符信息
 root = dom.documentElement
@@ -48,12 +48,9 @@ class CacheAllManagement():
         """
         #通过缓存拿到与之相连的物体名    
         cacheNodesList = clothHairT.getCacheNodes()
-        #cacheNodesList =[u'YL_Char_RG_Hi_1_YL_Char_SF_Hi2_hairBackTop_hairSystemShapeCache1', u'geoCache_YL_Char_RG_Hi_1__YL_Char_SF_Hi2_body_Geo___1', u'geoCache_YL_Char_RG_Hi_1__YL_Char_SF_Hi2_cloth_Geo___1']
 
         result = True    
         for eachCacheNode in cacheNodesList:
-            #eachCacheNode = "YL_Char_RG_Hi_1_YL_Char_SF_Hi2_hairBackTop_hairSystemShapeCache1"
-            #eachCacheNode = "geoCache_YL_Char_RG_Hi_1__YL_Char_SF_Hi2_cloth_Geo___1"
             if isNOrGeoCacheNode(eachCacheNode) == "geoCache":
                 cacheFlag = 1     
                 
@@ -137,7 +134,7 @@ class CacheAllManagement():
         createUploadWindow()
 
     def attachCacheAll(self):
-        """删除场景中所有的缓存节点,调用一键指缓存的窗口""" 
+        """删除场景中所有的缓存节点,调用一键指缓存的窗口"""
         cacheNodesList = clothHairT.getCacheNodes()
         if cacheNodesList:
             for eachNCacheNode in cacheNodesList:
@@ -260,7 +257,7 @@ def createUploadWindow():
     uploadTextRowLayout = cmds.rowColumnLayout(numberOfColumns=2, columnAttach=(1, 'right', 0), columnWidth=[(1, 88), (2, 280)], rowSpacing = (1, 4))
     uploadDirText = cmds.text(label="Upload Directory: ")
     uploadDirTextField = cmds.textField(text = tFolder, editable = False)
-    cmds.setParent("..")        
+    cmds.setParent("..")
     cmds.formLayout(chlid1Form, edit=True, attachForm=[(uCOptionMenu, "top", 6), (uCOptionMenu, "left", 6), (uCOptionMenu, "right", 4),
                                         (uploadTextRowLayout, "left", 4), (uploadTextRowLayout, "bottom", 10), (uploadTextRowLayout, "right", 4)],
                                         attachControl=[(uploadTextRowLayout, "top", 12, uCOptionMenu)] )
@@ -661,8 +658,6 @@ def doAttachCacheAll(tabs, child1, child2, attachDirTextField, chlid2TextFBG, at
                     for i in range(hairCacheNumber):  #正常情况下一个物体只有一个缓存（i = 0），但若某个物体与多个缓存文件匹配，则依次连接
                         attachHairCacheInfo = attachHairCacheNode(eachHairSystemShape, eachHairCacheDir[i], eachHairCacheFile[i])
                         cmds.warning("!!!----- " + attachHairCacheInfo)
-                        #print "cacheFileName:"+eachHairCacheFile[i]
-
             
             cmds.confirmDialog(title = "OK", message = "Attach All Cache Successful!", button = "OK", defaultButton = "OK")
             cmds.deleteUI(attachCacheWindow, window=True)
